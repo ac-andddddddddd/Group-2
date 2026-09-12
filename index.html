@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<!--
+  Course group project site — single file, no build step.
+
+  To update the page you can either:
+   1. Click "Edit page" in the top right, change things, then click "Save index.html"
+      and replace this file with the downloaded one, or
+   2. Edit the JSON block below by hand (the one with id="site-data").
+
+  Host it anywhere static: GitHub Pages, GitLab Pages, Netlify, or university web space.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/json" id="site-data">
+{
+  "group": "Untitled group",
+  "tagline": "One line about what the project is about.",
+  "course": "COURSE 000 — Course title",
+  "term": "Fall 2026",
+  "updated": "2026-09-12",
+  "members": [
+    { "name": "First Last", "email": "first.last@university.edu", "role": "Coordinator" },
+    { "name": "First Last", "email": "first.last@university.edu", "role": "Repository owner" },
+    { "name": "First Last", "email": "first.last@university.edu", "role": "" }
+  ],
+  "deliverables": [
+    {
+      "code": "A1",
+      "title": "Assignment 1",
+      "due": "",
+      "status": "planned",
+      "note": "",
+      "links": []
+    },
+    {
+      "code": "A2",
+      "title": "Assignment 2",
+      "due": "",
+      "status": "planned",
+      "note": "",
+      "links": []
+    },
+    {
+      "code": "A3",
+      "title": "Assignment 3",
+      "due": "",
+      "status": "planned",
+      "note": "",
+      "links": []
+    }
+  ],
+  "resources": [
+    { "label": "Code repository", "url": "", "note": "" },
+    { "label": "Course page", "url": "", "note": "" }
+  ]
+}
+</script>
+
+<style>
+  :root{
+    --paper:#E7EBF2;
+    --sheet:#FFFFFF;
+    --ink:#15213A;
+    --ink-2:#54627D;
+    --ink-3:#8592A8;
+    --rule:#CBD4E2;
+    --done:#14654A;
+    --done-bg:#DCEDE5;
+    --active:#8C5A0E;
+    --active-bg:#F5E7CE;
+    --plan-bg:#E2E7EF;
+    --focus:#2B4EE6;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+    --display:"Bricolage Grotesque","IBM Plex Sans",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.55;
+    font-variant-numeric:tabular-nums;
+  }
+  a{color:var(--ink);text-decoration-color:var(--ink-3);text-underline-offset:3px}
+  a:hover{text-decoration-color:var(--focus);color:var(--focus)}
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
+  button{font:inherit;color:inherit}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px 96px}
+
+  /* ---------- top bar ---------- */
+  .topbar{display:flex;justify-content:flex-end;padding:18px 0 0}
+  .edit-btn{
+    background:var(--ink);color:#fff;border:0;border-radius:999px;
+    padding:9px 18px;font-size:14px;font-weight:500;cursor:pointer;
+  }
+  .edit-btn:hover{background:var(--focus)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:28px 0 44px;border-bottom:1px solid var(--rule)}
+  .hero h1{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(2.6rem,9vw,5rem);
+    line-height:.96;
+    letter-spacing:-.025em;
+    margin:0 0 18px;
+    max-width:14ch;
+  }
+  .tagline{font-size:1.1rem;max-width:58ch;margin:0 0 26px;color:var(--ink-2)}
+  .course{font-size:.95rem;color:var(--ink-2);margin:0 0 26px}
+  .course strong{font-weight:600;color:var(--ink)}
+
+  .spine{display:flex;gap:5px;align-items:flex-end;margin-bottom:12px}
+  .seg{height:9px;flex:1;max-width:120px;background:var(--plan-bg);border-radius:2px}
+  .seg[data-s="submitted"]{background:var(--done)}
+  .seg[data-s="active"]{background:var(--active)}
+  .progress{font-size:.9rem;color:var(--ink-2);margin:0}
+
+  /* ---------- sections ---------- */
+  section{padding:44px 0;border-bottom:1px solid var(--rule)}
+  section:last-of-type{border-bottom:0}
+  h2{
+    font-family:var(--display);
+    font-weight:700;font-size:1.45rem;letter-spacing:-.015em;
+    margin:0 0 4px;
+  }
+  .sub{color:var(--ink-2);font-size:.92rem;margin:0 0 26px;max-width:60ch}
+  .empty{
+    color:var(--ink-2);font-size:.95rem;background:var(--sheet);
+    border:1px dashed var(--rule);border-radius:6px;padding:18px 20px;
+  }
+
+  /* ---------- team ---------- */
+  .roster{list-style:none;margin:0;padding:0;background:var(--sheet);border-radius:8px;overflow:hidden}
+  .roster li{
+    display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;
+    padding:16px 20px;border-bottom:1px solid var(--rule);
+  }
+  .roster li:last-child{border-bottom:0}
+  .m-name{font-weight:600;font-size:1.05rem;flex:0 0 auto}
+  .m-role{
+    font-size:.8rem;color:var(--done);background:var(--done-bg);
+    padding:2px 9px;border-radius:999px;flex:0 0 auto;
+  }
+  .m-mail{margin-left:auto;font-size:.92rem;color:var(--ink-2)}
+  .m-mail a{color:var(--ink-2)}
+
+  /* ---------- deliverables ---------- */
+  .items{list-style:none;margin:0;padding:0;position:relative}
+  .items::before{
+    content:"";position:absolute;left:15px;top:14px;bottom:14px;
+    width:2px;background:var(--rule);
+  }
+  .item{position:relative;padding:0 0 26px 52px}
+  .item:last-child{padding-bottom:0}
+  .node{
+    position:absolute;left:8px;top:12px;width:16px;height:16px;border-radius:50%;
+    background:var(--paper);border:2px solid var(--rule);
+  }
+  .item[data-s="submitted"] .node{background:var(--done);border-color:var(--done)}
+  .item[data-s="active"] .node{background:var(--active);border-color:var(--active)}
+  .card{background:var(--sheet);border-radius:8px;padding:18px 22px}
+  .card-top{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline}
+  .code{
+    font-family:var(--display);font-weight:700;font-size:1.35rem;
+    letter-spacing:-.02em;line-height:1.1;
+  }
+  .title{font-weight:500;font-size:1.05rem}
+  .meta{margin-left:auto;display:flex;gap:12px;align-items:center;font-size:.88rem;color:var(--ink-2)}
+  .pill{padding:2px 10px;border-radius:999px;background:var(--plan-bg);color:var(--ink-2);font-size:.8rem}
+  .pill[data-s="submitted"]{background:var(--done-bg);color:var(--done)}
+  .pill[data-s="active"]{background:var(--active-bg);color:var(--active)}
+  .note{margin:10px 0 0;font-size:.94rem;color:var(--ink-2);max-width:62ch}
+  .links{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px 22px}
+  .links a{font-size:.95rem;font-weight:500}
+  .nolinks{margin:12px 0 0;font-size:.9rem;color:var(--ink-3)}
+
+  /* ---------- resources ---------- */
+  .res{list-style:none;margin:0;padding:0;background:var(--sheet);border-radius:8px;overflow:hidden}
+  .res li{padding:15px 20px;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+  .res li:last-child{border-bottom:0}
+  .res .r-note{color:var(--ink-2);font-size:.9rem}
+  .res .r-dead{color:var(--ink-3)}
+
+  footer{padding:32px 0;color:var(--ink-3);font-size:.88rem}
+
+  /* ---------- editor ---------- */
+  .scrim{
+    position:fixed;inset:0;background:rgba(21,33,58,.4);
+    opacity:0;pointer-events:none;transition:opacity .18s ease;z-index:40;
+  }
+  .scrim.open{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;width:min(580px,100%);
+    background:var(--paper);z-index:50;display:flex;flex-direction:column;
+    transform:translateX(100%);transition:transform .22s ease;
+    box-shadow:-14px 0 40px rgba(21,33,58,.18);
+  }
+  .drawer.open{transform:none}
+  .drawer-head{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:18px 22px;border-bottom:1px solid var(--rule);
+  }
+  .drawer-head h2{margin:0;font-size:1.15rem}
+  .icon-btn{background:none;border:0;font-size:1.5rem;line-height:1;cursor:pointer;padding:4px 8px;color:var(--ink-2)}
+  .icon-btn:hover{color:var(--ink)}
+  .drawer-body{overflow-y:auto;padding:22px;flex:1}
+  .drawer-foot{
+    border-top:1px solid var(--rule);padding:16px 22px;
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--sheet);
+  }
+  fieldset{border:0;margin:0 0 30px;padding:0}
+  legend{font-family:var(--display);font-weight:700;font-size:1.05rem;padding:0;margin-bottom:10px}
+  .hint{font-size:.85rem;color:var(--ink-2);margin:-4px 0 14px;max-width:52ch}
+  label{display:block;font-size:.82rem;color:var(--ink-2);margin-bottom:4px}
+  input,select,textarea{
+    width:100%;font:inherit;font-size:.95rem;padding:8px 11px;
+    border:1px solid var(--rule);border-radius:5px;background:var(--sheet);color:var(--ink);
+  }
+  textarea{resize:vertical;min-height:58px}
+  .row{display:grid;gap:12px;margin-bottom:12px}
+  .row.two{grid-template-columns:1fr 1fr}
+  .row.three{grid-template-columns:.7fr 1fr 1fr}
+  .block{background:var(--sheet);border:1px solid var(--rule);border-radius:7px;padding:14px 16px;margin-bottom:12px}
+  .block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .block-head b{font-size:.9rem}
+  .sublinks{margin-top:10px;padding-top:10px;border-top:1px solid var(--rule)}
+  .ghost{
+    background:none;border:1px solid var(--rule);border-radius:999px;
+    padding:6px 14px;font-size:.85rem;cursor:pointer;color:var(--ink-2);
+  }
+  .ghost:hover{border-color:var(--ink);color:var(--ink)}
+  .tiny{font-size:.8rem;padding:3px 10px}
+  .primary{
+    background:var(--ink);color:#fff;border:0;border-radius:999px;
+    padding:10px 20px;font-size:.92rem;font-weight:500;cursor:pointer;
+  }
+  .primary:hover{background:var(--focus)}
+  .status-msg{font-size:.85rem;color:var(--ink-2);flex-basis:100%;margin:0}
+
+  @media (max-width:640px){
+    .wrap{padding:0 18px 72px}
+    .m-mail{margin-left:0;flex-basis:100%}
+    .meta{margin-left:0;flex-basis:100%}
+    .row.two,.row.three{grid-template-columns:1fr}
+    .item{padding-left:42px}
+    .items::before{left:11px}
+    .node{left:4px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .drawer,.scrim{transition:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="topbar">
+    <button class="edit-btn" id="openEdit">Edit page</button>
+  </div>
+
+  <header class="hero">
+    <h1 id="h-group"></h1>
+    <p class="tagline" id="h-tagline"></p>
+    <p class="course" id="h-course"></p>
+    <div class="spine" id="h-spine"></div>
+    <p class="progress" id="h-progress"></p>
+  </header>
+
+  <section>
+    <h2>Team</h2>
+    <p class="sub">Everyone in the group, with contact address and the role they hold.</p>
+    <div id="teamOut"></div>
+  </section>
+
+  <section>
+    <h2>Deliverables</h2>
+    <p class="sub">Reports, slides and presentations, linked here once each one is handed in.</p>
+    <div id="itemsOut"></div>
+  </section>
+
+  <section>
+    <h2>Project documentation</h2>
+    <p class="sub">Repository, data, references and anything else the project runs on.</p>
+    <div id="resOut"></div>
+  </section>
+
+  <footer id="footOut"></footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Edit page" hidden>
+  <div class="drawer-head">
+    <h2>Edit page</h2>
+    <button class="icon-btn" id="closeEdit" aria-label="Close editor">&times;</button>
+  </div>
+  <div class="drawer-body" id="formOut"></div>
+  <div class="drawer-foot">
+    <button class="primary" id="saveFile">Save index.html</button>
+    <button class="ghost" id="copyData">Copy data block</button>
+    <p class="status-msg" id="statusMsg">Edits live in this tab only. Save the file to keep them.</p>
+  </div>
+</aside>
+
+<script>
+(function(){
+  "use strict";
+
+  var STATUSES = [
+    { v:"planned",   t:"Not started" },
+    { v:"active",    t:"In progress" },
+    { v:"submitted", t:"Submitted"   }
+  ];
+
+  var data = JSON.parse(document.getElementById("site-data").textContent);
+
+  /* ---------------- helpers ---------------- */
+  function el(id){ return document.getElementById(id); }
+  function esc(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c];
+    });
+  }
+  function statusText(v){
+    for (var i=0;i<STATUSES.length;i++) if (STATUSES[i].v===v) return STATUSES[i].t;
+    return "Not started";
+  }
+  function fmtDate(s){
+    if (!s) return "";
+    var d = new Date(s + "T12:00:00");
+    if (isNaN(d)) return s;
+    return d.toLocaleDateString(undefined, { day:"numeric", month:"short", year:"numeric" });
+  }
+  function safeUrl(u){
+    u = String(u || "").trim();
+    if (!u) return "";
+    if (/^(https?:|mailto:|\/|\.\/|#)/i.test(u)) return u;
+    return "https://" + u;
+  }
+
+  /* ---------------- render page ---------------- */
+  function renderSite(){
+    el("h-group").textContent   = data.group || "Untitled group";
+    el("h-tagline").textContent = data.tagline || "";
+    el("h-tagline").hidden      = !data.tagline;
+
+    var bits = [];
+    if (data.course) bits.push("<strong>" + esc(data.course) + "</strong>");
+    if (data.term)   bits.push(esc(data.term));
+    el("h-course").innerHTML = bits.join(", ");
+    el("h-course").hidden = bits.length === 0;
+
+    var dl = data.deliverables || [];
+    el("h-spine").innerHTML = dl.map(function(d){
+      return '<span class="seg" data-s="' + esc(d.status) + '" title="' + esc(d.code) + '"></span>';
+    }).join("");
+    var done = dl.filter(function(d){ return d.status === "submitted"; }).length;
+    el("h-progress").textContent = dl.length
+      ? done + " of " + dl.length + " deliverables submitted"
+      : "";
+
+    /* team */
+    var team = data.members || [];
+    el("teamOut").innerHTML = team.length
+      ? '<ul class="roster">' + team.map(function(m){
+          var mail = m.email
+            ? '<span class="m-mail"><a href="mailto:' + esc(m.email) + '">' + esc(m.email) + "</a></span>"
+            : "";
+          var role = m.role ? '<span class="m-role">' + esc(m.role) + "</span>" : "";
+          return "<li><span class=\"m-name\">" + esc(m.name || "Unnamed") + "</span>" + role + mail + "</li>";
+        }).join("") + "</ul>"
+      : '<p class="empty">No members yet. Open the editor and add everyone in the group.</p>';
+
+    /* deliverables */
+    el("itemsOut").innerHTML = dl.length
+      ? '<ul class="items">' + dl.map(function(d){
+          var links = (d.links || []).filter(function(l){ return l.url; });
+          var linkHtml = links.length
+            ? '<ul class="links">' + links.map(function(l){
+                return '<li><a href="' + esc(safeUrl(l.url)) + '">' + esc(l.label || l.url) + "</a></li>";
+              }).join("") + "</ul>"
+            : '<p class="nolinks">No files linked yet.</p>';
+          var meta = [];
+          if (d.due) meta.push("Due " + esc(fmtDate(d.due)));
+          meta.push('<span class="pill" data-s="' + esc(d.status) + '">' + esc(statusText(d.status)) + "</span>");
+          return '<li class="item" data-s="' + esc(d.status) + '">' +
+                   '<span class="node"></span>' +
+                   '<div class="card">' +
+                     '<div class="card-top">' +
+                       '<span class="code">' + esc(d.code) + "</span>" +
+                       '<span class="title">' + esc(d.title || "Untitled") + "</span>" +
+                       '<span class="meta">' + meta.join("") + "</span>" +
+                     "</div>" +
+                     (d.note ? '<p class="note">' + esc(d.note) + "</p>" : "") +
+                     linkHtml +
+                   "</div>" +
+                 "</li>";
+        }).join("") + "</ul>"
+      : '<p class="empty">No deliverables yet. Add A1 in the editor.</p>';
+
+    /* resources */
+    var rs = (data.resources || []).filter(function(r){ return r.label || r.url; });
+    el("resOut").innerHTML = rs.length
+      ? '<ul class="res">' + rs.map(function(r){
+          var label = r.url
+            ? '<a href="' + esc(safeUrl(r.url)) + '">' + esc(r.label || r.url) + "</a>"
+            : '<span class="r-dead">' + esc(r.label) + " (no link yet)</span>";
+          return "<li>" + label + (r.note ? '<span class="r-note">' + esc(r.note) + "</span>" : "") + "</li>";
+        }).join("") + "</ul>"
+      : '<p class="empty">Nothing here yet. Add the repository link and anything else the group shares.</p>';
+
+    el("footOut").textContent = data.updated ? "Last updated " + fmtDate(data.updated) : "";
+    document.title = (data.group || "Course project") + (data.course ? " — " + data.course : "");
+  }
+
+  /* ---------------- render editor ---------------- */
+  function field(label, kind, i, f, value, type, j){
+    var attrs = 'data-kind="' + kind + '" data-i="' + i + '" data-f="' + f + '"' +
+                (j == null ? "" : ' data-j="' + j + '"');
+    return "<div><label>" + esc(label) + "</label>" +
+           '<input type="' + (type || "text") + '" ' + attrs + ' value="' + esc(value || "") + '"></div>';
+  }
+
+  function renderForm(){
+    var h = "";
+
+    h += "<fieldset><legend>Group</legend>" +
+         '<div class="row">' + field("Group name","site",0,"group",data.group) + "</div>" +
+         '<div class="row">' +
+           "<div><label>One-line description</label>" +
+           '<textarea data-kind="site" data-i="0" data-f="tagline">' + esc(data.tagline) + "</textarea></div>" +
+         "</div>" +
+         '<div class="row two">' +
+           field("Course","site",0,"course",data.course) +
+           field("Term","site",0,"term",data.term) +
+         "</div>" +
+         '<div class="row">' + field("Last updated","site",0,"updated",data.updated,"date") + "</div>" +
+         "</fieldset>";
+
+    h += "<fieldset><legend>Team</legend>" +
+         '<p class="hint">Leave the role blank if someone does not hold one.</p>';
+    (data.members || []).forEach(function(m,i){
+      h += '<div class="block">' +
+             '<div class="block-head"><b>Member ' + (i+1) + "</b>" +
+             '<button class="ghost tiny" data-act="del-member" data-i="' + i + '">Remove</button></div>' +
+             '<div class="row two">' +
+               field("Name","member",i,"name",m.name) +
+               field("Email","member",i,"email",m.email,"email") +
+             "</div>" +
+             '<div class="row">' + field("Role (optional)","member",i,"role",m.role) + "</div>" +
+           "</div>";
+    });
+    h += '<button class="ghost" data-act="add-member">Add member</button></fieldset>';
+
+    h += "<fieldset><legend>Deliverables</legend>" +
+         '<p class="hint">Add the report and slide links the day after each deadline.</p>';
+    (data.deliverables || []).forEach(function(d,i){
+      h += '<div class="block">' +
+             '<div class="block-head"><b>' + esc(d.code || "Item " + (i+1)) + "</b>" +
+             '<button class="ghost tiny" data-act="del-item" data-i="' + i + '">Remove</button></div>' +
+             '<div class="row three">' +
+               field("Code","item",i,"code",d.code) +
+               field("Title","item",i,"title",d.title) +
+               field("Due date","item",i,"due",d.due,"date") +
+             "</div>" +
+             '<div class="row">' +
+               "<div><label>Status</label><select data-kind=\"item\" data-i=\"" + i + "\" data-f=\"status\">" +
+               STATUSES.map(function(s){
+                 return '<option value="' + s.v + '"' + (d.status===s.v?" selected":"") + ">" + s.t + "</option>";
+               }).join("") + "</select></div>" +
+             "</div>" +
+             '<div class="row">' +
+               "<div><label>Note (optional)</label>" +
+               '<textarea data-kind="item" data-i="' + i + '" data-f="note">' + esc(d.note) + "</textarea></div>" +
+             "</div>" +
+             '<div class="sublinks"><label>Links</label>';
+      (d.links || []).forEach(function(l,j){
+        h += '<div class="row three">' +
+               field("Label","link",i,"label",l.label,"text",j) +
+               field("URL","link",i,"url",l.url,"url",j) +
+               '<div><label>&nbsp;</label><button class="ghost tiny" data-act="del-link" data-i="' + i + '" data-j="' + j + '">Remove link</button></div>' +
+             "</div>";
+      });
+      h += '<button class="ghost tiny" data-act="add-link" data-i="' + i + '">Add link</button></div></div>';
+    });
+    h += '<button class="ghost" data-act="add-item">Add deliverable</button></fieldset>';
+
+    h += "<fieldset><legend>Project documentation</legend>";
+    (data.resources || []).forEach(function(r,i){
+      h += '<div class="block">' +
+             '<div class="block-head"><b>Link ' + (i+1) + "</b>" +
+             '<button class="ghost tiny" data-act="del-res" data-i="' + i + '">Remove</button></div>' +
+             '<div class="row two">' +
+               field("Label","res",i,"label",r.label) +
+               field("URL","res",i,"url",r.url,"url") +
+             "</div>" +
+             '<div class="row">' + field("Note (optional)","res",i,"note",r.note) + "</div>" +
+           "</div>";
+    });
+    h += '<button class="ghost" data-act="add-res">Add link</button></fieldset>';
+
+    el("formOut").innerHTML = h;
+  }
+
+  /* ---------------- editing ---------------- */
+  function onInput(e){
+    var t = e.target, kind = t.getAttribute("data-kind");
+    if (!kind) return;
+    var i = +t.getAttribute("data-i"), f = t.getAttribute("data-f"), v = t.value;
+    if (kind === "site")   data[f] = v;
+    if (kind === "member") data.members[i][f] = v;
+    if (kind === "item")   data.deliverables[i][f] = v;
+    if (kind === "res")    data.resources[i][f] = v;
+    if (kind === "link")   data.deliverables[i].links[+t.getAttribute("data-j")][f] = v;
+    renderSite();
+    note("Edits live in this tab only. Save the file to keep them.");
+  }
+
+  function nextCode(){
+    var n = (data.deliverables || []).length + 1;
+    return "A" + n;
+  }
+
+  function onClick(e){
+    var b = e.target.closest("[data-act]");
+    if (!b) return;
+    var act = b.getAttribute("data-act"), i = +b.getAttribute("data-i"), j = +b.getAttribute("data-j");
+    if (act === "add-member") data.members.push({ name:"", email:"", role:"" });
+    if (act === "del-member") data.members.splice(i,1);
+    if (act === "add-item")   data.deliverables.push({ code:nextCode(), title:"", due:"", status:"planned", note:"", links:[] });
+    if (act === "del-item")   data.deliverables.splice(i,1);
+    if (act === "add-link")   (data.deliverables[i].links = data.deliverables[i].links || []).push({ label:"", url:"" });
+    if (act === "del-link")   data.deliverables[i].links.splice(j,1);
+    if (act === "add-res")    data.resources.push({ label:"", url:"", note:"" });
+    if (act === "del-res")    data.resources.splice(i,1);
+    renderForm();
+    renderSite();
+  }
+
+  /* ---------------- save ---------------- */
+  function dataJson(){
+    return JSON.stringify(data, null, 2).replace(/</g, "\\u003c");
+  }
+  function note(msg){ el("statusMsg").textContent = msg; }
+
+  function copyText(txt){
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(txt);
+    return new Promise(function(res, rej){
+      var ta = document.createElement("textarea");
+      ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      ok ? res() : rej();
+    });
+  }
+
+  el("copyData").addEventListener("click", function(){
+    copyText(dataJson()).then(function(){
+      note("Data copied. Paste it into index.html between the site-data script tags.");
+    }, function(){
+      note("Copying failed. Select the JSON from the file and paste it in by hand.");
+    });
+  });
+
+  el("saveFile").addEventListener("click", function(){
+    note("Building the file…");
+    fetch(location.href, { cache:"no-store" })
+      .then(function(r){ if (!r.ok) throw new Error("read"); return r.text(); })
+      .then(function(src){
+        var re = /(<script type="application\/json" id="site-data">)[\s\S]*?(<\/script>)/;
+        if (!re.test(src)) throw new Error("marker");
+        var out = src.replace(re, function(m, open, close){
+          return open + "\n" + dataJson() + "\n" + close;
+        });
+        var url = URL.createObjectURL(new Blob([out], { type:"text/html" }));
+        var a = document.createElement("a");
+        a.href = url; a.download = "index.html";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+        note("Saved. Replace index.html in your repository with the downloaded file.");
+      })
+      .catch(function(){
+        copyText(dataJson()).then(function(){
+          note("The browser can't read the page file from your computer, so the data block was copied instead. Paste it into index.html between the site-data script tags.");
+        }, function(){
+          note("Saving needs the page to be served over http. Use \"Copy data block\" instead.");
+        });
+      });
+  });
+
+  /* ---------------- drawer ---------------- */
+  var drawer = el("drawer"), scrim = el("scrim");
+  function openDrawer(){
+    renderForm();
+    drawer.hidden = false;
+    requestAnimationFrame(function(){
+      drawer.classList.add("open"); scrim.classList.add("open");
+      var first = drawer.querySelector("input");
+      if (first) first.focus();
+    });
+  }
+  function closeDrawer(){
+    drawer.classList.remove("open"); scrim.classList.remove("open");
+    setTimeout(function(){ drawer.hidden = true; }, 220);
+    el("openEdit").focus();
+  }
+  el("openEdit").addEventListener("click", openDrawer);
+  el("closeEdit").addEventListener("click", closeDrawer);
+  scrim.addEventListener("click", closeDrawer);
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && !drawer.hidden) closeDrawer();
+  });
+  el("formOut").addEventListener("input", onInput);
+  el("formOut").addEventListener("change", onInput);
+  el("formOut").addEventListener("click", onClick);
+
+  renderSite();
+})();
+</script>
+</body>
+</html>
